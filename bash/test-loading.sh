@@ -1,7 +1,7 @@
-#!/bin/bash 
+#!/bin/bash
 #SBATCH --partition=general
 #SBATCH --constraint='epyc128'
-#SBATCH --cpus-per-task=100
+#SBATCH --cpus-per-task=1
 #SBATCH --ntasks=1
 #SBATCH --nodes=1
 #SBATCH --mail-type=ALL
@@ -9,9 +9,9 @@
 source /etc/profile.d/modules.sh
 module purge
 module load r/4.3.2
-cd .. 
+cd ..
 
-echo "Running sim_scripts/mar-spat-mi-sim_setting-9.R" 
-time Rscript "sim_scripts/mar-spat-mi-sim_setting-9.R"
+echo "Running sim_scripts/test-loading.R"
+time Rscript "sim_scripts/test-loading.R"
 
 echo "Done!"
