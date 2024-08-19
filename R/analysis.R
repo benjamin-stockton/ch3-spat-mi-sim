@@ -28,14 +28,15 @@ geostat_analysis <- function(df) {
 
     loc2 <- pnregstan::create_grid_df(2, 2)
 
-    fit <- pnregstan::fit_gp_geostat_reg_model(loc1 = loc,
+    invisible(capture.output(fit <- pnregstan::fit_gp_geostat_reg_model(loc1 = loc,
                                                loc2 = loc2,
                                                Y = df$Y,
                                                X = as.matrix(df[,c("X", "U1", "U2")]),
                                                refresh = 0,
                                                show_messages = FALSE,
                                                show_exceptions = FALSE,
-                                               chains = 2)
+                                               adapt_delta = 0.85,
+                                               chains = 2)))
 
     draws_df <- fit$draws(variables = c("beta0", "beta", "sigma", "alpha", "rho")) |>
         posterior::as_draws_df()
@@ -48,7 +49,7 @@ geostat_analysis <- function(df) {
     return(smry)
 }
 
-geostat_analysis_imp <- function(imps) {
+geostat_analysis_imp <- function(imps, mc.cores = 20) {
     imps <- mice::complete(imps, "all", include = FALSE)
     M <- length(imps)
 
@@ -60,14 +61,15 @@ geostat_analysis_imp <- function(imps) {
 
         loc2 <- pnregstan::create_grid_df(2, 2)
 
-        fit <- pnregstan::fit_gp_geostat_reg_model(loc1 = loc,
+        invisible(capture.output(fit <- pnregstan::fit_gp_geostat_reg_model(loc1 = loc,
                                                    loc2 = loc2,
                                                    Y = df$Y,
                                                    X = as.matrix(df[,c("X", "U1", "U2")]),
                                                    refresh = 0,
                                                    show_messages = FALSE,
                                                    show_exceptions = FALSE,
-                                                   chains = 2)
+                                                   adapt_delta = 0.85,
+                                                   chains = 2)))
 
         draws_df <- fit$draws(variables = c("beta0", "beta", "sigma", "alpha", "rho")) |>
             posterior::as_draws_df()

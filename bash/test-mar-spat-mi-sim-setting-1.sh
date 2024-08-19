@@ -1,5 +1,5 @@
 #!/bin/bash 
-#SBATCH --partition=general
+#SBATCH --partition=lo-core
 #SBATCH --constraint='epyc128'
 #SBATCH --cpus-per-task=15
 #SBATCH --ntasks=1

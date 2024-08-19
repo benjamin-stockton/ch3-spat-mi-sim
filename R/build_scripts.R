@@ -65,5 +65,5 @@ create_bash_scripts("sim_scripts",
                     script_base_name = "mar-spat-mi-sim_setting-%s.R",
                     sh_name = "mar-spat-mi-sim",
                     setting = setting,
-                    n_cpus = 100)
+                    n_cpus = 50)
 

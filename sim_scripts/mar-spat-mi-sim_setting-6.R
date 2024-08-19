@@ -30,21 +30,21 @@ miss_pars <- list(
     p_miss = 0.5
 ) # Missingness mechanism parameters (also controls MAR/MNAR)
 
-methods <- c("complete", "pmm", "pgpreginc", "pnregid")
+methods <- c("complete", "mean", "norm", "pgpreginc", "pnregid")
 
-x1 <- simulation(N_sim, N_sample, init_seed, M, methods, pop_pars, miss_pars, mc.cores = 100)
+out_path <- file.path("sim-results", paste0("set-", 6))
+f_out <- paste0(out_path, "/sim-results-mar-spat-mi-sim_setting-", 6)
 
-out_path <- file.path("sim-results")
-
+x1 <- simulation(N_sim, N_sample, init_seed, M, methods, pop_pars, miss_pars, f_out = f_out, mc.cores = N_sim)
 
 saveRDS(x1, file = paste0(out_path, "/sim-results-mar-spat-mi-", Sys.Date(), "-sim_setting-", 6, ".rds"))
 
-x2 <- x1 |>
-    dplyr::bind_rows()
-f_out <- paste0(out_path, "/sim-results-mar-spat-mi-sim_setting-", 6, ".csv")
-if (file.exists(f_out)) {
-    readr::write_csv(x2, f_out, append = TRUE)
-} else {
-    readr::write_csv(x2, f_out)
-}
+# x2 <- x1 |>
+#     dplyr::bind_rows()
+
+# if (file.exists(f_out)) {
+#     readr::write_csv(x2, f_out, append = TRUE)
+# } else {
+#     readr::write_csv(x2, f_out)
+# }
 

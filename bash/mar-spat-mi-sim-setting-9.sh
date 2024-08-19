@@ -1,7 +1,7 @@
 #!/bin/bash 
-#SBATCH --partition=general
+#SBATCH --partition=lo-core
 #SBATCH --constraint='epyc128'
-#SBATCH --cpus-per-task=100
+#SBATCH --cpus-per-task=50
 #SBATCH --ntasks=1
 #SBATCH --nodes=1
 #SBATCH --mail-type=ALL

@@ -43,17 +43,31 @@ generate_data <- function(N_sample, population_parameters) {
 }
 
 impose_missingness <- function(df, freq = c(1), mech = "MAR", p_miss = 0.5) {
-    mads_df <- mice::ampute(data = df)
+    # mads_df <- mice::ampute(data = df)
+    #
+    # amp_p <- mads_df$patterns[1,]
+    # amp_p[1, c(1, 5, 6)] <- 0
+    #
+    # amp_w <- mads_df$weights[1,]
+    # amp_w[1, c(1, 5,6)] <- 0
+    #
+    # mads_df1 <- mice::ampute(data = df, patterns = amp_p, prop = p_miss,
+    #                    weights = amp_w, freq = freq, mech = mech, type = "RIGHT")
 
-    amp_p <- mads_df$patterns[1,]
-    amp_p[1, c(1, 5, 6)] <- 0
+    col_means <- apply(df, 2, mean)
+    alpha <- c(0,0,0,-0.5,0,0,2)
+    alpha0 <- (-t(alpha) %*% col_means - log(1/p_miss - 1))[1,1]
 
-    amp_w <- mads_df$weights[1,]
-    amp_w[1, c(1, 5,6)] <- 0
+    alpha_vec <- alpha0 + as.matrix(df) %*% alpha
 
-    mads_df1 <- mice::ampute(data = df, patterns = amp_p, prop = p_miss,
-                       weights = amp_w, freq = freq, mech = mech)
+    p_miss_vec <- boot::inv.logit(alpha_vec)
 
-    return(mads_df1$amp)
+    miss_ind <- sample(1:nrow(df), prob = p_miss_vec, replace = FALSE, size = ceiling(p_miss * nrow(df)))
+
+    amp <- df
+
+    amp[miss_ind, c("theta", "U1", "U2")] <- NA
+
+    return(amp)
 }
 
