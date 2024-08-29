@@ -67,18 +67,24 @@ create_res_sum <- function(ll, load_rds = FALSE, file_prefix = "sim-results_", f
                    mutate(
                        set_n = sc
                    ) |>
-                       left_join(setting, by = "set_n") |>
-                       slice_head(n = 5)
+                       left_join(setting, by = "set_n")
 
                })
 
-    res_sum |>
+    rs <- res_sum |>
         group_by(set_n, method, term) |>
         summarize(
             n_sim = n()
         ) |>
         filter(term == "intercept") |>
         print(n = 30)
+
+    min_sim_n <- min(rs$n_sim)
+
+    res_sum <- res_sum |>
+        group_by(set_n, method, term) |>
+        dplyr::slice_head(n = min_sim_n)
+
     # res_sum |>
     #     print(n = 30)
     f_out <- paste0("sum_", file_prefix)
