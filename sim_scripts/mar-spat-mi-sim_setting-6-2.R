@@ -12,7 +12,7 @@ source(file.path(file_path, "utils.R"))
 N_sim <- 50 # Number of simulation iterations
 N_sample <- 15 # Sample size
 init_seed <- 6513 # Initial seed
-M <- 50 # Number of imputations
+M <- 25 # Number of imputations
 pop_pars <- list(
     mu0 = c(1,0),
     B_vec = c(1, 3),
@@ -27,7 +27,7 @@ pop_pars <- list(
 miss_pars <- list(
     freq = c(1),
     mech = "MAR",
-    p_miss = 0.5
+    p_miss = 0.25
 ) # Missingness mechanism parameters (also controls MAR/MNAR)
 
 methods <- c("complete", "mean", "norm", "pgpreginc", "pnregid")

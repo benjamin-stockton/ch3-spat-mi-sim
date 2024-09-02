@@ -30,14 +30,14 @@ miss_pars <- list(
     p_miss = 0.25
 ) # Missingness mechanism parameters (also controls MAR/MNAR)
 
-methods <- c("complete", "mean", "norm", "pgpreginc", "pnregid")
+methods <- c("cca", "jpgpmgpimp")
 
 out_path <- file.path("sim-results", paste0("set-", 4))
-f_out <- paste0(out_path, "/sim-results-mar-spat-mi-sim_setting-", 4)
+f_out <- paste0(out_path, "/sim-results-mar-spat-joint-mod-sim_setting-", 4)
 
 x1 <- simulation(N_sim, N_sample, init_seed, M, methods, pop_pars, miss_pars, f_out = f_out, mc.cores = N_sim)
 
-saveRDS(x1, file = paste0(out_path, "/sim-results-mar-spat-mi-", Sys.Date(), "-sim_setting-", 4, ".rds"))
+saveRDS(x1, file = paste0(out_path, "/sim-results-mar-spat-joint-mod-", Sys.Date(), "-sim_setting-", 4, ".rds"))
 
 # x2 <- x1 |>
 #     dplyr::bind_rows()

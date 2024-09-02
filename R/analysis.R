@@ -88,3 +88,34 @@ geostat_analysis_imp <- function(imps, mc.cores = 20) {
 
     return(smry)
 }
+
+joint_geostat_analysis <- function(inc_data) {
+
+    loc <- as.matrix(inc_data[,c("long", "lat")])
+
+    loc2 <- pnregstan::create_grid_df(2, 2)
+
+
+    invisible(capture.output(fit <- pnregstan::fit_jpgpmgp_geostat_reg_inc_model(loc1 = loc, loc2 = loc2,
+                                            theta = inc_data$theta,
+                                            Y = inc_data$Y,
+                                            X = as.matrix(inc_data[,c("X")]),
+                                            refresh = 0,
+                                            show_messages = FALSE,
+                                            show_exceptions = FALSE,
+                                            adapt_delta = 0.85,
+                                            chains = 2)))
+
+    draws_df <- fit$draws(variables = c("beta_y", "sigma_y", "alpha_y", "rho_y")) |>
+        posterior::as_draws_df()
+
+    draws_df$.imp <- 1000
+
+    smry <- draws_df |>
+        dplyr::select(-.imp) |>
+        posterior::summarize_draws(mean, median, sd, mad,
+                                   ~posterior::quantile2(.x, probs = c(0.025, 0.975), names = TRUE),
+                                   posterior::default_convergence_measures())
+
+    return(smry)
+}

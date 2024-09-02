@@ -38,6 +38,17 @@ simulation <- function(N_sim, N_sample, init_seed, M, methods, pop_pars, miss_pa
                     )
                 res <- geostat_analysis(sample_data)
             }
+            else if (mtd == "cca") {
+                print(paste0("Iteration ", x, "; Complete Data Geostat Analysis"))
+                sample_data <- inc_data |>
+                    dplyr::filter(!is.na(theta)) |>
+                    dplyr::mutate(
+                        theta = theta_obs,
+                        U1 = cos(theta_obs),
+                        U2 = sin(theta_obs)
+                    )
+                res <- geostat_analysis(sample_data)
+            }
             else if (mtd %in% c("pmm", "pnregid", "mean", "norm")) {
                 print(paste0("Iteration ", x, "; Imputing with: ", mtd))
                 imp_data <- impute(inc_data, method = mtd, M = M, maxit = 1, mc.cores = mc.cores)
@@ -51,6 +62,12 @@ simulation <- function(N_sim, N_sample, init_seed, M, methods, pop_pars, miss_pa
                 print(paste0("Iteration ", x, "; Geostat Analysis"))
 
                 res <- geostat_analysis_imp(imp_data, mc.cores = mc.cores)
+            }
+            else if (mtd == "jpgpmgpimp") {
+                print(paste0("Iteration ", x, "; Imputing with: ", mtd))
+                print(paste0("Iteration ", x, "; Joint Analysis"))
+
+                res <- joint_geostat_analysis(inc_data)
             }
 
             res$par_val <- c(pop_pars$beta_y, pop_pars$sigma_y,
@@ -76,3 +93,4 @@ simulation <- function(N_sim, N_sample, init_seed, M, methods, pop_pars, miss_pa
 
     return(x1)
 }
+
