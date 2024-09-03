@@ -21,3 +21,13 @@ setting <- setting |>
 
 saveRDS(setting, 'sim-settings/setting.rds')
 
+setting <- expand.grid(N_sample = c(7, 10, 15),
+                       N_sim = c(500),
+                       p_miss = c(0.1, 0.25, 0.5))
+
+setting <- setting |>
+    dplyr::mutate(set_n = seq(1, length(setting$N_sample), 1),
+                  M = p_miss * 100)
+
+saveRDS(setting, 'sim-settings/jm_setting.rds')
+

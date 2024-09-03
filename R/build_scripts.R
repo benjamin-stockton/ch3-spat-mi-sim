@@ -105,7 +105,7 @@ create_bash_scripts("sim_scripts",
 ## MAR Spat Joint Modeling with Incompleteness only on Angles ##
 #################################################
 
-setting <- readRDS("sim-settings/setting.rds")
+setting <- readRDS("sim-settings/jm_setting.rds")
 
 purrr::pwalk(.l = setting,
              .f = function(N_sample, N_sim, p_miss, M, set_n){

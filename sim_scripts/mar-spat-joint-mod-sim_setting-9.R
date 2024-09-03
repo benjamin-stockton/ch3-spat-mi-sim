@@ -9,7 +9,7 @@ source(file.path(file_path, "simulation.R"))
 source(file.path(file_path, "utils.R"))
 
 # From command line get the following arguments
-N_sim <- 100 # Number of simulation iterations
+N_sim <- 500 # Number of simulation iterations
 N_sample <- 15 # Sample size
 init_seed <- 9137 # Initial seed
 M <- 50 # Number of imputations
@@ -30,7 +30,7 @@ miss_pars <- list(
     p_miss = 0.5
 ) # Missingness mechanism parameters (also controls MAR/MNAR)
 
-methods <- c("cca", "jpgpmgpimp")
+methods <- c("complete", "cca", "jpgpmgpimp", "norm", "pnregid")
 
 out_path <- file.path("sim-results", paste0("set-", 9))
 f_out <- paste0(out_path, "/sim-results-mar-spat-joint-mod-sim_setting-", 9)

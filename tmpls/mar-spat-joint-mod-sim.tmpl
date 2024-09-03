@@ -30,7 +30,7 @@ miss_pars <- list(
     p_miss = {{p_miss}}
 ) # Missingness mechanism parameters (also controls MAR/MNAR)
 
-methods <- c("cca", "jpgpmgpimp")
+methods <- c("complete", "cca", "jpgpmgpimp", "norm", "pnregid")
 
 out_path <- file.path("sim-results", paste0("set-", {{set_n}}))
 f_out <- paste0(out_path, "/sim-results-mar-spat-joint-mod-sim_setting-", {{set_n}})
